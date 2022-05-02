@@ -1,4 +1,4 @@
 # Great-Reads
 ## Tables association
-![Tables association](/Users/oanapaun/GreatReads/GreatReads updated.png)
+![Tables association](https://github.com/oanapaun91/Great-Reads/blob/master/GreatReads%20updated.png)
 
