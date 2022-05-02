@@ -1,4 +1,6 @@
-package com.example.greatreads.Author;
+package com.example.greatreads.Repository;
+
+import com.example.greatreads.Model.Book;
 
 import java.util.ArrayList;
 
