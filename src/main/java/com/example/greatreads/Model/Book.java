@@ -7,12 +7,15 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Data
 @Entity(name = "books")
 public class Book {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,19 +41,18 @@ public class Book {
     private String description;
 
     @Column(name = "approved")
-    private boolean Pending;
+    @Enumerated(EnumType.STRING)
+    private ApprovedStatus approvedStatus;
 
-    @ManyToMany(mappedBy = "wishlistBooks")
-    @JsonIgnore
-    private Set<User> usersHavingBookOnWishlist;
 
-    @OneToMany(mappedBy = "book")
-    @JsonBackReference
-    private Set<Wishlist> booksOnWishlist;
+    @ManyToMany(mappedBy="wishlistedBooks")
+    private List<User> usersWithWishlist;
 
-    @ManyToMany(mappedBy = "readBooks")
-    @JsonIgnore
-    private Set<User> usersReadBook;
+    @ManyToMany
+    @JoinTable(name = "read_books",
+            joinColumns = { @JoinColumn(name = "book_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
+    private List<User> usersReadingThisBook = new ArrayList<User>();
 
     @OneToMany(mappedBy = "book")
     @JsonBackReference
@@ -73,3 +75,28 @@ public class Book {
         return Objects.hash(title, user);
     }
 }
+
+
+//@Data
+//@Entity(name = "books")
+//public class Book {
+
+//
+//    @ManyToMany(mappedBy = "wishListBooks")
+//    @JsonIgnore
+//    private Set<User> usersHavingBookOnWishlist;
+//
+//    @OneToMany(mappedBy = "book")
+//    @JsonBackReference
+//    private Set<Wishlist> booksOnWishlist;
+//
+//    @ManyToMany(mappedBy = "readBooks")
+//    @JsonIgnore
+//    private Set<User> usersReadBook;
+//
+
+//
+
+//
+
+//}

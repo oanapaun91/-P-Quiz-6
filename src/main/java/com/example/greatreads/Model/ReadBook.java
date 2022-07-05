@@ -4,22 +4,23 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity(name = "read books")
+@Entity(name = "read_books")
 @Data
 public class ReadBook {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "reader_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @Column(name = "is read?")
+
+    @Column(name = "is_read")
     private boolean isRead;
 }
