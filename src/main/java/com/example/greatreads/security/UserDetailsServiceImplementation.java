@@ -1,7 +1,7 @@
-package com.example.greatreads.Security;
+package com.example.greatreads.security;
 
-import com.example.greatreads.Model.User;
-import com.example.greatreads.Repository.UserRepository;
+import com.example.greatreads.model.User;
+import com.example.greatreads.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,8 +1,10 @@
-package com.example.greatreads.Model;
+package com.example.greatreads.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,8 +16,9 @@ import java.util.Set;
 
 @Data
 @Entity(name = "books")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +49,7 @@ public class Book {
 
 
     @ManyToMany(mappedBy="wishlistedBooks")
+    @JsonIgnore
     private List<User> usersWithWishlist;
 
     @ManyToMany
@@ -55,11 +59,11 @@ public class Book {
     private List<User> usersReadingThisBook = new ArrayList<User>();
 
     @OneToMany(mappedBy = "book")
-    @JsonBackReference
+    @JsonIgnore
     private Set<ReadBook> booksRead;
 
     @OneToMany(mappedBy = "book")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Review> review;
 
     @Override
@@ -76,27 +80,3 @@ public class Book {
     }
 }
 
-
-//@Data
-//@Entity(name = "books")
-//public class Book {
-
-//
-//    @ManyToMany(mappedBy = "wishListBooks")
-//    @JsonIgnore
-//    private Set<User> usersHavingBookOnWishlist;
-//
-//    @OneToMany(mappedBy = "book")
-//    @JsonBackReference
-//    private Set<Wishlist> booksOnWishlist;
-//
-//    @ManyToMany(mappedBy = "readBooks")
-//    @JsonIgnore
-//    private Set<User> usersReadBook;
-//
-
-//
-
-//
-
-//}

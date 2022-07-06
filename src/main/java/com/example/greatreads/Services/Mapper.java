@@ -1,13 +1,10 @@
 package com.example.greatreads.Services;
 
-import com.example.greatreads.Model.ApprovedStatus;
-import com.example.greatreads.Model.Book;
+import com.example.greatreads.model.ApprovedStatus;
+import com.example.greatreads.model.Book;
 import com.example.greatreads.dto.AddBookDTO;
 import com.example.greatreads.dto.BookDTO;
-import com.example.greatreads.dto.WishlistBookDTO;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class Mapper {

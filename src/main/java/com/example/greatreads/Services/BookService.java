@@ -1,17 +1,16 @@
 package com.example.greatreads.Services;
 
-import com.example.greatreads.Model.ApprovedStatus;
-import com.example.greatreads.Model.Book;
-import com.example.greatreads.Model.User;
-import com.example.greatreads.Repository.BookRepository;
-import com.example.greatreads.Repository.UserRepository;
+import com.example.greatreads.model.ApprovedStatus;
+import com.example.greatreads.model.Book;
+import com.example.greatreads.repository.BookRepository;
+import com.example.greatreads.repository.UserRepository;
 import com.example.greatreads.dto.AddBookDTO;
 import com.example.greatreads.dto.BookDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +32,14 @@ public class BookService {
         return bookRepository.findByTitleAndAuthor(lastName, title);
     }
 
+    public List<BookDTO> findByApprovedStatus(ApprovedStatus status){
+            return bookRepository.findByApprovedStatus(status)
+                    .stream()
+                    .map(mapper::toBookDTO)
+                    .collect(toList());
+    }
+
+
     public Optional<Book> findById(int id) {
         return bookRepository.findById(id);
     }
@@ -45,6 +52,7 @@ public class BookService {
     }
 
     public List<BookDTO> findBooksByType(String type) {
+        List<Book> booksOfSameType = bookRepository.findByType(type);
         return bookRepository.findByType(type)
                 .stream()
                 .map(mapper::toBookDTO)
@@ -52,7 +60,7 @@ public class BookService {
     }
 
     public ResponseEntity<List<BookDTO>> findBooksByAuthor(String email) {
-        if (userService.isAuthor(email)) {
+        if (userService.isAuthor(email) || userService.isAdministrator(email)) {
             return new ResponseEntity<>((bookRepository.findByAuthor(email)
                     .stream()
                     .map(mapper::toBookDTO)
@@ -62,7 +70,7 @@ public class BookService {
     }
 
     public ResponseEntity<Book> addBook(AddBookDTO newBook, String email) {
-        Book book = new Book();
+        Book book;
         Optional<Book> existentBook = bookRepository.findByTitle(newBook.getTitle());
         if (userService.isAuthor(email)) {
             if (!existentBook.isPresent()) {
@@ -70,7 +78,6 @@ public class BookService {
                 book.setUser(userRepository.findByEmail(email).orElseThrow());
                 book.setApprovedStatus(ApprovedStatus.valueOf("PENDING"));
                 return new ResponseEntity<>(book, HttpStatus.OK);
-
             } else if (!existentBook.get().getUser().getEmail().equals(email)) {
                 book = mapper.toBook(newBook);
                 book.setUser(userRepository.findByEmail(email).orElseThrow());
@@ -82,7 +89,6 @@ public class BookService {
                 book = mapper.toBook(newBook);
                 book.setUser(userRepository.findByEmail(email).orElseThrow());
                 book.setApprovedStatus(ApprovedStatus.valueOf("APPROVED"));
-
                 return new ResponseEntity<>(book, HttpStatus.OK);
             } else if (!existentBook.get().getUser().getEmail().equals(email)) {
                 book = mapper.toBook(newBook);
@@ -94,20 +100,22 @@ public class BookService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<BookDTO> updateApprovedStatus(Book book, String newStatus){
-        if (book.getApprovedStatus().equals("PENDING")){
+    public ResponseEntity<BookDTO> updateApprovedStatus(@RequestParam(value = "bookId") Integer bookId, String newStatus){
+        Book reviewedBook = bookRepository.findById(bookId).orElseThrow();
+
+        if (reviewedBook.getApprovedStatus().getStatus().equals("PENDING")){
             switch (newStatus)
             {
                 case "APPROVED":
-                    book.setApprovedStatus(ApprovedStatus.valueOf("APPROVED"));
+                    reviewedBook.setApprovedStatus(ApprovedStatus.valueOf("APPROVED"));
                     break;
 
                 case "REJECTED":
-                    book.setApprovedStatus(ApprovedStatus.valueOf("REJECTED"));
+                    reviewedBook.setApprovedStatus(ApprovedStatus.valueOf("REJECTED"));
                     break;
             }
-            bookRepository.saveAndFlush(book);
-            return new ResponseEntity<>(mapper.toBookDTO(book), HttpStatus.OK);
+            bookRepository.saveAndFlush(reviewedBook);
+            return new ResponseEntity<>(mapper.toBookDTO(reviewedBook), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

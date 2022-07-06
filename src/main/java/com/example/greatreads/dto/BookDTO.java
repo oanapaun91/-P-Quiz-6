@@ -1,7 +1,6 @@
 package com.example.greatreads.dto;
 
-import com.example.greatreads.Model.ApprovedStatus;
-import com.example.greatreads.Model.User;
+import com.example.greatreads.model.ApprovedStatus;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

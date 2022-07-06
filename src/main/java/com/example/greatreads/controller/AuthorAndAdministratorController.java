@@ -1,10 +1,11 @@
-package com.example.greatreads.Controller;
+package com.example.greatreads.controller;
 
-import com.example.greatreads.Model.Book;
+import com.example.greatreads.model.ApprovedStatus;
+import com.example.greatreads.model.Book;
 //import com.example.greatreads.Repository.BookCollection;
-import com.example.greatreads.Model.Review;
-import com.example.greatreads.Repository.BookRepository;
-import com.example.greatreads.Repository.ReviewRepository;
+import com.example.greatreads.model.Review;
+import com.example.greatreads.repository.BookRepository;
+import com.example.greatreads.repository.ReviewRepository;
 import com.example.greatreads.Services.BookService;
 import com.example.greatreads.dto.AddBookDTO;
 import com.example.greatreads.dto.BookDTO;
@@ -42,22 +43,19 @@ public class AuthorAndAdministratorController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalEmail = authentication.getName();
         ResponseEntity<Book> book = bookService.addBook(newBook, currentPrincipalEmail);
-        System.out.println(currentPrincipalEmail);
         bookRepository.saveAndFlush(book.getBody());
     }
 
-    //de verificat
-
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     @PutMapping(path = "/approval_request")
-    public ResponseEntity<BookDTO> reviewApprovalRequest(@RequestBody Book book, @RequestParam (value = "status") String approvedStatus) {
-        return bookService.updateApprovedStatus(book, approvedStatus);
+    public ResponseEntity<BookDTO> reviewApprovalRequest(@RequestParam (value = "bookId") Integer bookId, @RequestParam (value = "status") String approvedStatus) {
+        return bookService.updateApprovedStatus(bookId, approvedStatus);
     }
 
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     @GetMapping(path = "/status")
-    public ResponseEntity<List<Book>> getAllBooksByStatus (@RequestParam (value = "status") String status){
-        return new ResponseEntity(bookRepository.findByApprovedStatus(status), HttpStatus.OK);
+    public ResponseEntity<List<BookDTO>> getAllBooksByStatus (@RequestParam (value = "status") ApprovedStatus status){
+        return new ResponseEntity(bookService.findByApprovedStatus(status), HttpStatus.OK);
     }
 
 

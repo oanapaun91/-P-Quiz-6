@@ -1,6 +1,6 @@
-package com.example.greatreads.Security;
+package com.example.greatreads.security;
 
-import com.example.greatreads.Model.User;
+import com.example.greatreads.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

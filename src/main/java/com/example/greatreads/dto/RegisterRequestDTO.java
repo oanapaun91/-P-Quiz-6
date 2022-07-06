@@ -1,6 +1,6 @@
 package com.example.greatreads.dto;
 
-import com.example.greatreads.Model.UserType;
+import com.example.greatreads.model.UserType;
 import lombok.Getter;
 import lombok.Setter;
 

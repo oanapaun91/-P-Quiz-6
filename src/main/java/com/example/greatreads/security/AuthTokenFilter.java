@@ -1,4 +1,4 @@
-package com.example.greatreads.Security;
+package com.example.greatreads.security;
 
 import com.example.greatreads.Services.JWTService;
 import lombok.NonNull;

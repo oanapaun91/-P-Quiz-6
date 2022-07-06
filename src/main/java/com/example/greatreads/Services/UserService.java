@@ -1,9 +1,9 @@
 package com.example.greatreads.Services;
 
-import com.example.greatreads.Model.User;
-import com.example.greatreads.Model.UserType;
-import com.example.greatreads.Repository.UserRepository;
-import com.example.greatreads.Security.UserDetailsImplementation;
+import com.example.greatreads.model.User;
+import com.example.greatreads.model.UserType;
+import com.example.greatreads.repository.UserRepository;
+import com.example.greatreads.security.UserDetailsImplementation;
 import com.example.greatreads.dto.LoginRequestDTO;
 import com.example.greatreads.dto.LoginResponseDTO;
 import com.example.greatreads.dto.RegisterRequestDTO;
@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -69,17 +68,16 @@ public class UserService {
     @Transactional
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         if (userRepository.existsByEmail(registerRequestDTO.getEmail())) {
-            return ResponseEntity.badRequest().body("Email used");
+            return ResponseEntity.badRequest().body("Email used!");
         }
 
         String userType = String.valueOf(registerRequestDTO.getUserType());
 
-        if (userType == null || !(userType.toUpperCase(Locale.ROOT).equals("READER") || userType.toUpperCase(Locale.ROOT).equals("AUTHOR") || !userType.toUpperCase(Locale.ROOT).equals("ADMINISTRATOR"))) {
-            throw new RuntimeException("Invalid role");
+        if (userType == null || !(userType.toUpperCase(Locale.ROOT).equals("READER") || userType.toUpperCase(Locale.ROOT).equals("AUTHOR") || userType.toUpperCase(Locale.ROOT).equals("ADMINISTRATOR"))) {
+            throw new RuntimeException("Invalid role!");
         }
 
         User user = new User(null, registerRequestDTO.getEmail(), encoder.encode(registerRequestDTO.getPassword()), registerRequestDTO.getFirstName(), registerRequestDTO.getLastName(), UserType.valueOf(userType));
-
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully!");
     }

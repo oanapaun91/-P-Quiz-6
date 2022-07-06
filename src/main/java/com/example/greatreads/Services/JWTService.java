@@ -1,9 +1,8 @@
 package com.example.greatreads.Services;
 
-import com.example.greatreads.Security.UserDetailsImplementation;
-import com.example.greatreads.Model.User;
+import com.example.greatreads.security.UserDetailsImplementation;
+import com.example.greatreads.model.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;

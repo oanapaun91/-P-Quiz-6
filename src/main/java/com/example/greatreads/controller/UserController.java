@@ -1,4 +1,4 @@
-package com.example.greatreads.Controller;
+package com.example.greatreads.controller;
 
 import com.example.greatreads.Services.UserService;
 import com.example.greatreads.dto.LoginRequestDTO;

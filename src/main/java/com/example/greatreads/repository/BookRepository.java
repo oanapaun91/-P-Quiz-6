@@ -1,11 +1,11 @@
-package com.example.greatreads.Repository;
+package com.example.greatreads.repository;
 
-import com.example.greatreads.Model.Book;
-import com.example.greatreads.dto.BookDTO;
-import lombok.Data;
+import com.example.greatreads.model.ApprovedStatus;
+import com.example.greatreads.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +14,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
   Optional<Book> findByTitle (String title);
   Optional<Book> findById (int id);
 
-@Query(value = "SELECT * FROM books " +
+  @Transactional
+  @Query(value = "SELECT * FROM books " +
         "JOIN users ON books.id_author = users.id " +
         "WHERE " +
         "users.email  = ?1 ",
@@ -31,7 +32,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
           nativeQuery = true)
   Optional<Book> findByTitleAndAuthor(String title, String author);
 
-  List<Book> findByApprovedStatus(String status);
+  List<Book> findByApprovedStatus(ApprovedStatus status);
 }
 
 

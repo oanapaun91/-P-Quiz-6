@@ -1,4 +1,4 @@
-package com.example.greatreads.Model;
+package com.example.greatreads.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,4 +11,5 @@ public enum UserType {
     ADMINISTRATOR("administrator");
 
     private final String userType;
+
 }

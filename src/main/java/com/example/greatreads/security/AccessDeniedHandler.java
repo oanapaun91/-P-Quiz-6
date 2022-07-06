@@ -1,4 +1,4 @@
-package com.example.greatreads.Security;
+package com.example.greatreads.security;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;

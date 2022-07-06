@@ -1,6 +1,6 @@
-package com.example.greatreads.Repository;
+package com.example.greatreads.repository;
 
-import com.example.greatreads.Model.User;
+import com.example.greatreads.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
